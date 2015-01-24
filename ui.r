@@ -11,11 +11,12 @@ shinyUI(navbarPage("MOOC Visualization Tool", inverse=FALSE,
       mainPanel(
         fluidRow(
           column(12,
-            h5(textOutput("graphName")),
-            br()
+            plotOutput("LoEPlot")
           )
         )
       )
     )
+  ), 
+  tabPanel("Genre comparation"
   )
 ))

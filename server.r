@@ -1,40 +1,36 @@
+# server.R
 library(shiny)
+# We put here all load for performance reasons.
+#Nevertheless the load blocks the app a few seconds
+moocs <- read.csv("./data/HMXPC13_DI_v2_5-14-14.csv" ,header=TRUE, sep=",");
+# We keep only information from users that have obtained a certificate of completion
+data <- moocs[certified == "1",]
+# Variable for selecting courses
+courses <- data$course_id
+# Variable for range of studies
+studies <- data$LoE_DI
 
 shinyServer(function(input, output) {
-  moocs <- read.csv("./HMXPC13_DI_v2_5-14-14.csv" ,header=TRUE, sep=",");
+
+  output$left <- renderText({ 
+    "Bienvenido! Este es el panel de control. Aquí puedes configurar
+    las opciones de visualización de los datos."
+  })
   
-  # Variable for selecting courses
-  courses <- moocs$course_id
-  
-  # Variable for range of studies
-  studies <- moocs$LoE_DI
-  
-  # t1 <- table(studies, courses) # Count ocurrences of level of studies per course
-  # t2 <- table(studies)          # Count ocurrences of level of studies in all courses
+  output$LoEPlot <- renderPlot({
+    colors = c("red", "yellow", "green", "violet","orange", "blue")
+    barplot(table(studies),main="Nº de certificados atendiendo al nivel de estudios", 
+            beside=TRUE, # Separar las categorias en varias barras 
+            col=colors, # We set some colors
+            names.arg=c("Missing","Bachelor's","Doctorate","< Secondary", "Master's", "Secondary"))
+  })
   
   # For rendering based on selection
-  #plotType <- function(x, type) {
+  # plotType <- function(x, type) {
   #  switch(type,
   #         A = hist(x),
   #         B = barplot(x),
   #         C = pie(x))
   #}
-  
-  output$left <- renderText({ 
-    "Bienvenido! Este es el panel de control. Aquí puedes configurar
-    las opciones de visualización de los datos."
-  })
-    
-  output$graphName <- renderText({ 
-    "% de certificados atendiendo al genero"
-  })
-    
-  #output$genderPlot <- renderPlot({
-  #  x    <- moocs[] # MOOCs dataset #####OLD #faithful[, 2]  # Old Faithful Geyser data
-  #  bins <- seq(min(x), max(x), length.out = input$bins + 1)
-    
-    # draw the histogram with the specified number of bins
-  #  hist(x, breaks = bins, col = 'darkgray', border = 'white')
-  #})
 
 })
