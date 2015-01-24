@@ -1,18 +1,21 @@
 library(shiny)
 
-shinyUI(fluidPage(
-  
-  titlePanel("MOOC Visualization Tool"),
-  
-  #Left Sidebar
-  sidebarLayout(
-    sidebarPanel(
-        textOutput("Left sidebar")
-    ),
-  
-    # Center with the content
-    mainPanel(
-      textOutput("Hola Mundo")
+shinyUI(navbarPage("MOOC Visualization Tool", inverse=FALSE,
+  tabPanel("Level of education",
+    #Left Sidebar
+    sidebarLayout(
+      sidebarPanel(
+        textOutput("left")
+      ),
+      # Center with the content
+      mainPanel(
+        fluidRow(
+          column(12,
+            h5(textOutput("graphName")),
+            br()
+          )
+        )
+      )
     )
   )
 ))
