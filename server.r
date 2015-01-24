@@ -2,17 +2,15 @@
 library(shiny)
 # We put here all load for performance reasons.
 #Nevertheless the load blocks the app a few seconds
-moocs <- read.csv("./data/HMXPC13_DI_v2_5-14-14.csv" ,header=TRUE, sep=",");
-# We keep only information from users that have obtained a certificate of completion
-data <- moocs[certified == "1",]
-# Variable for selecting courses
-courses <- data$course_id
-# Variable for range of studies
-studies <- data$LoE_DI
 
 shinyServer(function(input, output) {
 
-  output$left <- renderText({ 
+  output$leftEd <- renderText({ 
+    "Bienvenido! Este es el panel de control. Aquí puedes configurar
+    las opciones de visualización de los datos."
+  })
+  
+  output$leftAge <- renderText({ 
     "Bienvenido! Este es el panel de control. Aquí puedes configurar
     las opciones de visualización de los datos."
   })
@@ -25,12 +23,14 @@ shinyServer(function(input, output) {
             names.arg=c("Missing","Bachelor's","Doctorate","< Secondary", "Master's", "Secondary"))
   })
   
-  # For rendering based on selection
-  # plotType <- function(x, type) {
-  #  switch(type,
-  #         A = hist(x),
-  #         B = barplot(x),
-  #         C = pie(x))
-  #}
+  output$AgePlot <- renderPlot({
+    colors = c("red", "yellow", "green", "violet","orange", "blue","cyan","grey","pink")
+    barplot(table(agecat),main="Nº de certificados atendiendo a la edad", 
+            beside=TRUE, # Separar las categorias en varias barras 
+            col=colors, # We set some colors
+            names.arg=c("10-18","18-25","25-30","30-35", "35-45", "45-55","55-65","65-80","80-90"))
+  })
+  
+  
 
 })

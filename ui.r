@@ -1,11 +1,11 @@
 library(shiny)
 
 shinyUI(navbarPage("MOOC Visualization Tool", inverse=FALSE,
-  tabPanel("Level of education",
+  tabPanel("By Level of education",
     #Left Sidebar
     sidebarLayout(
       sidebarPanel(
-        textOutput("left")
+        textOutput("leftEd")
       ),
       # Center with the content
       mainPanel(
@@ -16,7 +16,21 @@ shinyUI(navbarPage("MOOC Visualization Tool", inverse=FALSE,
         )
       )
     )
-  ), 
-  tabPanel("Genre comparation"
-  )
-))
+  ),
+  tabPanel("By age",
+    #Left sidebar
+    sidebarLayout(
+      sidebarPanel(
+        textOutput("left")  
+      ),
+      # Center with the content
+      mainPanel(
+        fluidRow(
+          column(12,
+                 #textOutput("leftAge")
+                 plotOutput("AgePlot")
+          )
+        )
+      )  
+    )
+)))
