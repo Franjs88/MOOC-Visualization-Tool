@@ -12,7 +12,15 @@ studies <- data$LoE_DI
 # t1 <- table(studies, courses) # Count ocurrences of level of studies per course
 # t2 <- table(studies)          # Count ocurrences of level of studies in all courses
 
-
+#2
 categories <- c(10,18,25,30,35,45,55,65,80,90)
 agecat <- cut(years, categories)
 table(agecat)
+
+
+# 3
+genderpercent <- gender/sum(gender)*100
+labels <- c("Missing","Female","Male","Other")
+genderpercent <- round(genderpercent, digits=0)
+labels <- paste(labels, genderpercent)
+labels <- paste(labels,"%",sep="") # ad % to labels
