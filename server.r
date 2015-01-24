@@ -40,11 +40,19 @@ shinyServer(function(input, output) {
   
   # Visualization by genre
   output$GenderPlot <- renderPlot({
-    #colors = c("red", "blue", "green", "grey")
     pie(table(data$gender), labels = labels, 
         main="Nº de certificados atendiendo al género", 
         col=rainbow(length(labels)) # We set some colors
         )
+  })
+  
+  # Visualization by country
+  # http://www.londonr.org/Presentations/Andy%20South%20-%20Beautiful%20world%20maps%20in%20R.pdf
+  output$CountryPlot <- renderPlot({
+    pie(table(data$gender), labels = labels, 
+        main="Nº de certificados atendiendo al género", 
+        col=rainbow(length(labels)) # We set some colors
+    )
   })
   
   
