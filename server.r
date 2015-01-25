@@ -1,7 +1,33 @@
 # server.R
 library(shiny)
+library(rworldmap)
+library(countrycode)
 # We put here all load for performance reasons.
 #Nevertheless the load blocks the app a few seconds
+
+# Variable for range of studies
+studies <- data$LoE_DI
+# Years of students (we traduce year of birth to age)
+years <- 2014 - data$YoB
+
+# By Age
+categories <- c(10,18,25,30,35,45,55,65,80,90)
+agecat <- cut(years, categories)
+table(agecat)
+
+#By gender
+gender <- table(data$gender)
+genderpercent <- gender/sum(gender)*100
+labels <- c("Missing","Female","Male","Other")
+genderpercent <- round(genderpercent, digits=0)
+labels <- paste(labels, genderpercent)
+labels <- paste(labels,"%",sep="") # ad % to labels
+
+#By Country
+dataf <- table(data$final_cc_cname_DI)
+Countries <- as.data.frame(dataf)
+Countries[1] <- countrycode(Countries$Var1,"country.name", "iso3c")
+sPDF <- joinCountryData2Map(Countries, joinCode = "NAME", nameJoinColumn = "Var1")
 
 shinyServer(function(input, output) {
 
@@ -16,6 +42,11 @@ shinyServer(function(input, output) {
   })
   
   output$leftGender <- renderText({ 
+    "Bienvenido! Este es el panel de control. Aquí puedes configurar
+    las opciones de visualización de los datos."
+  })
+  
+  output$leftCountry <- renderText({ 
     "Bienvenido! Este es el panel de control. Aquí puedes configurar
     las opciones de visualización de los datos."
   })
@@ -48,11 +79,9 @@ shinyServer(function(input, output) {
   
   # Visualization by country
   # http://www.londonr.org/Presentations/Andy%20South%20-%20Beautiful%20world%20maps%20in%20R.pdf
+  # http://cran.r-project.org/web/packages/rworldmap/vignettes/rworldmap.pdf
   output$CountryPlot <- renderPlot({
-    pie(table(data$gender), labels = labels, 
-        main="Nº de certificados atendiendo al género", 
-        col=rainbow(length(labels)) # We set some colors
-    )
+    mapCountryData(sPDF, nameColumnToPlot="Freq", mapTitle="Nº de alumnos certificados atendiendo al País", colourPalette="terrain")
   })
   
   

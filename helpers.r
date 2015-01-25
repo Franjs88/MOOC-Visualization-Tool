@@ -19,8 +19,17 @@ table(agecat)
 
 
 # 3
+gender <- table(data$gender)
 genderpercent <- gender/sum(gender)*100
 labels <- c("Missing","Female","Male","Other")
 genderpercent <- round(genderpercent, digits=0)
 labels <- paste(labels, genderpercent)
 labels <- paste(labels,"%",sep="") # ad % to labels
+
+# 4
+dataf <- table(data$final_cc_cname_DI)
+Countries <- as.data.frame(dataf)
+Countries[1] <- countrycode(Countries$Var1,"country.name", "iso3c")
+
+sPDF <- joinCountryData2Map(Countries, joinCode = "NAME", nameJoinColumn = "Var1")
+mapCountryData(sPDF, nameColumnToPlot="Freq", mapTitle="Nº de alumnos certificados atendiendo al País", colourPalette="terrain")

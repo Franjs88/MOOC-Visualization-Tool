@@ -48,5 +48,21 @@ shinyUI(navbarPage("MOOC Visualization Tool", inverse=TRUE,
                )
              )  
            )
+  ),
+  tabPanel("By Country",
+           #Left sidebar
+           sidebarLayout(
+             sidebarPanel(
+               textOutput("leftCountry")  
+             ),
+             # Center with the content
+             mainPanel(
+               fluidRow(
+                 column(12,
+                        plotOutput("CountryPlot")
+                 )
+               )
+             )  
+           )
   )
 ))
