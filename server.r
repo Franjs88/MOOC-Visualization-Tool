@@ -5,6 +5,8 @@ library(countrycode)
 # We put here all load for performance reasons.
 #Nevertheless the load blocks the app a few seconds
 
+# We keep only information from users that have obtained a certificate of completion
+data <- moocs[moocs$certified == "1",]
 # Variable for range of studies
 studies <- data$LoE_DI
 # Years of students (we traduce year of birth to age)
@@ -78,10 +80,25 @@ shinyServer(function(input, output) {
   })
   
   # Visualization by country
-  # http://www.londonr.org/Presentations/Andy%20South%20-%20Beautiful%20world%20maps%20in%20R.pdf
-  # http://cran.r-project.org/web/packages/rworldmap/vignettes/rworldmap.pdf
   output$CountryPlot <- renderPlot({
-    mapCountryData(sPDF, nameColumnToPlot="Freq", mapTitle="Nº de alumnos certificados atendiendo al País", colourPalette="terrain")
+    par(mai=c(0,0,0.3,0),xaxs="i",yaxs="i")
+    # creating a user defined palette
+    op <- palette(c('green','yellow','orange','red'))
+    #find quartile breaks
+    cutVector <- quantile(sPDF@data[["Freq"]], na.rm=TRUE)
+    #classify the data to a factor
+    sPDF@data[["FreqCategories"]] <- cut(sPDF@data[["Freq"]], cutVector, include.lowest=TRUE)
+    #rename the categories
+    levels(sPDF@data[["FreqCategories"]]) <- c('low', 'medium', 'high', 'very_high')
+    #mapping
+    #mapParams <- 
+    mapCountryData(sPDF, nameColumnToPlot="FreqCategories",
+                                mapTitle="Nº de alumnos certificados atendiendo al País",
+                                colourPalette="palette", addLegend=TRUE,
+                                oceanCol='lightblue',
+                                missingCountryCol='white'
+                                )
+    #do.call(addMapLegend, c(mapParams,legendWidth=0.5,legendMar=2))
   })
   
   
