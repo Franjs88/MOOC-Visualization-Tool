@@ -2,34 +2,10 @@
 library(shiny)
 library(rworldmap)
 library(countrycode)
+
 # We put here all load for performance reasons.
 #Nevertheless the load blocks the app a few seconds
-
-# We keep only information from users that have obtained a certificate of completion
-data <- moocs[moocs$certified == "1",]
-# Variable for range of studies
-studies <- data$LoE_DI
-# Years of students (we traduce year of birth to age)
-years <- 2014 - data$YoB
-
-# By Age
-categories <- c(10,18,25,30,35,45,55,65,80,90)
-agecat <- cut(years, categories)
-table(agecat)
-
-#By gender
-gender <- table(data$gender)
-genderpercent <- gender/sum(gender)*100
-labels <- c("Missing","Female","Male","Other")
-genderpercent <- round(genderpercent, digits=0)
-labels <- paste(labels, genderpercent)
-labels <- paste(labels,"%",sep="") # ad % to labels
-
-#By Country
-dataf <- table(data$final_cc_cname_DI)
-Countries <- as.data.frame(dataf)
-Countries[1] <- countrycode(Countries$Var1,"country.name", "iso3c")
-sPDF <- joinCountryData2Map(Countries, joinCode = "NAME", nameJoinColumn = "Var1")
+data <- moocs
 
 shinyServer(function(input, output) {
 
@@ -55,6 +31,15 @@ shinyServer(function(input, output) {
   
   # Visualization by Level of Education
   output$LoEPlot <- renderPlot({
+    if(input$radioEd != "1") {
+      # We keep only information from users that have obtained a certificate of completion
+      data <- moocs[moocs$certified == "1",]
+    } else {
+      data <- moocs
+    }
+    # Variable for range of studies
+    studies <- data$LoE_DI
+    
     colors = c("red", "yellow", "green", "violet","orange", "blue")
     barplot(table(studies),main="Nº de certificados atendiendo al nivel de estudios", 
             beside=TRUE, # Separar las categorias en varias barras 
@@ -64,6 +49,18 @@ shinyServer(function(input, output) {
   
   # Visualization by age
   output$AgePlot <- renderPlot({
+    if(input$radioAge != "1") {
+      # We keep only information from users that have obtained a certificate of completion
+      data <- moocs[moocs$certified == "1",]
+    } else {
+      data <- moocs
+    }
+    # Years of students (we traduce year of birth to age)
+    years <- 2014 - data$YoB
+    # By Age
+    categories <- c(10,18,25,30,35,45,55,65,80,90)
+    agecat <- cut(years, categories)
+    
     colors = c("red", "yellow", "green", "violet","orange", "blue","cyan","grey","pink")
     barplot(table(agecat),main="Nº de certificados atendiendo a la edad", 
             beside=TRUE, # Separar las categorias en varias barras 
@@ -73,6 +70,20 @@ shinyServer(function(input, output) {
   
   # Visualization by genre
   output$GenderPlot <- renderPlot({
+    if(input$radioGender != "1") {
+      # We keep only information from users that have obtained a certificate of completion
+      data <- moocs[moocs$certified == "1",]
+    } else {
+      data <- moocs
+    }
+    #By gender
+    gender <- table(data$gender)
+    genderpercent <- gender/sum(gender)*100
+    labels <- c("Missing","Female","Male","Other")
+    genderpercent <- round(genderpercent, digits=0)
+    labels <- paste(labels, genderpercent)
+    labels <- paste(labels,"%",sep="") # ad % to labels
+    
     pie(table(data$gender), labels = labels, 
         main="Nº de certificados atendiendo al género", 
         col=rainbow(length(labels)) # We set some colors
@@ -81,24 +92,39 @@ shinyServer(function(input, output) {
   
   # Visualization by country
   output$CountryPlot <- renderPlot({
+    if(input$radioCountry != "1") {
+      # We keep only information from users that have obtained a certificate of completion
+      data <- moocs[moocs$certified == "1",]
+    } else {
+      data <- moocs
+    }
+    #By Country
+    dataf <- table(data$final_cc_cname_DI)
+    Countries <- as.data.frame(dataf)
+    Countries[1] <- countrycode(Countries$Var1,"country.name", "iso3c")
+    sPDF <- joinCountryData2Map(Countries, joinCode = "NAME", nameJoinColumn = "Var1")
+    
     par(mai=c(0,0,0.3,0),xaxs="i",yaxs="i")
+    
     # creating a user defined palette
     op <- palette(c('green','yellow','orange','red'))
-    #find quartile breaks
+    
+    # find quartile breaks
     cutVector <- quantile(sPDF@data[["Freq"]], na.rm=TRUE)
-    #classify the data to a factor
+    
+    # classify the data to a factor
     sPDF@data[["FreqCategories"]] <- cut(sPDF@data[["Freq"]], cutVector, include.lowest=TRUE)
-    #rename the categories
+    
+    # rename the categories
     levels(sPDF@data[["FreqCategories"]]) <- c('low', 'medium', 'high', 'very_high')
+    
     #mapping
-    #mapParams <- 
     mapCountryData(sPDF, nameColumnToPlot="FreqCategories",
                                 mapTitle="Nº de alumnos certificados atendiendo al País",
                                 colourPalette="palette", addLegend=TRUE,
                                 oceanCol='lightblue',
                                 missingCountryCol='white'
                                 )
-    #do.call(addMapLegend, c(mapParams,legendWidth=0.5,legendMar=2))
   })
   
   

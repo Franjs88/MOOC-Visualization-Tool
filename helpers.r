@@ -3,6 +3,8 @@
 moocs <- read.csv("./data/HMXPC13_DI_v2_5-14-14.csv" ,header=TRUE, sep=",");
 # We keep only information from users that have obtained a certificate of completion
 data <- moocs[moocs$certified == "1",]
+# We keep data only for registrants
+data <- moocs[moocs$registered == "1",]
 # Years of students (we traduce year of birth to age)
 years <- 2014 - data$YoB
 # Variable for range of studies

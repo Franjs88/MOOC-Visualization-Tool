@@ -5,7 +5,10 @@ shinyUI(navbarPage("MOOC Visualization Tool", inverse=TRUE,
     #Left Sidebar
     sidebarLayout(
       sidebarPanel(
-        textOutput("leftEd")
+        textOutput("leftEd"),
+        radioButtons("radioEd", label=NULL,
+                     choices = list("Registered" = 1, "Certified" = 2), 
+                     selected = 1)
       ),
       # Center with the content
       mainPanel(
@@ -21,7 +24,10 @@ shinyUI(navbarPage("MOOC Visualization Tool", inverse=TRUE,
     #Left sidebar
     sidebarLayout(
       sidebarPanel(
-        textOutput("leftAge")  
+        textOutput("leftAge"),
+        radioButtons("radioAge", label=NULL,
+                     choices = list("Registered" = 1, "Certified" = 2), 
+                     selected = 1)
       ),
       # Center with the content
       mainPanel(
@@ -37,7 +43,10 @@ shinyUI(navbarPage("MOOC Visualization Tool", inverse=TRUE,
            #Left sidebar
            sidebarLayout(
              sidebarPanel(
-               textOutput("leftGender")  
+               textOutput("leftGender"), 
+               radioButtons("radioGender", label=NULL,
+                            choices = list("Registered" = 1, "Certified" = 2), 
+                            selected = 1)
              ),
              # Center with the content
              mainPanel(
@@ -53,7 +62,10 @@ shinyUI(navbarPage("MOOC Visualization Tool", inverse=TRUE,
            #Left sidebar 
                fluidRow(
                  column(2,
-                        textOutput("leftCountry") 
+                        textOutput("leftCountry"),
+                        radioButtons("radioCountry", label=NULL,
+                                     choices = list("Registered" = 1, "Certified" = 2), 
+                                     selected = 1)
                  ),
                  column(10,
                         plotOutput("CountryPlot")
