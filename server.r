@@ -5,7 +5,10 @@ library(countrycode)
 
 # We put here all load for performance reasons.
 #Nevertheless the load blocks the app a few seconds
-data <- moocs
+data <- moocs[moocs$registered == "1",]
+
+# Adding courses list.
+course_id <- unique(data$course_id)
 
 shinyServer(function(input, output) {
 
@@ -31,12 +34,36 @@ shinyServer(function(input, output) {
   
   # Visualization by Level of Education
   output$LoEPlot <- renderPlot({
-    if(input$radioEd != "1") {
+    if(input$radioEd == "2") {
       # We keep only information from users that have obtained a certificate of completion
+      writeLines("Entra en 2")
+      data <- NULL
       data <- moocs[moocs$certified == "1",]
     } else {
-      data <- moocs
+      writeLines("Entra en else")
+      data <- moocs[moocs$registered == "1",]
     }
+    
+    switch(input$selectEd,
+           "1" = (data <- data[data$registered == "1",]),
+           "2" = (data <- data[data$course_id == course_id[1],]),
+           "3" = (data <- data[data$course_id == course_id[2],]),
+           "4" = (data <- data[data$course_id == course_id[3],]),
+           "5" = (data <- data[data$course_id == course_id[4],]),
+           "6" = (data <- data[data$course_id == course_id[5],]),
+           "7" = (data <- data[data$course_id == course_id[6],]),
+           "8" = (data <- data[data$course_id == course_id[7],]),
+           "9" = (data <- data[data$course_id == course_id[8],]),
+           "10" = (data <- data[data$course_id == course_id[9],]),
+           "11" = (data <- data[data$course_id == course_id[10],]),
+           "12" = (data <- data[data$course_id == course_id[11],]),
+           "13" = (data <- data[data$course_id == course_id[12],]),
+           "14" = (data <- data[data$course_id == course_id[13],]),
+           "15" = (data <- data[data$course_id == course_id[14],]),
+           "16" = (data <- data[data$course_id == course_id[15],]),
+           "17" = (data <- data[data$course_id == course_id[16],])
+    )
+    
     # Variable for range of studies
     studies <- data$LoE_DI
     
@@ -49,12 +76,33 @@ shinyServer(function(input, output) {
   
   # Visualization by age
   output$AgePlot <- renderPlot({
-    if(input$radioAge != "1") {
+    if(input$radioAge == "2") {
       # We keep only information from users that have obtained a certificate of completion
       data <- moocs[moocs$certified == "1",]
     } else {
-      data <- moocs
+      data <- moocs[moocs$registered == "1",]
     }
+    
+    switch(input$selectAge,
+           "1" = (data <- moocs),
+           "2" = (data <- moocs[moocs$course_id == course_id[1],]),
+           "3" = (data <- moocs[moocs$course_id == course_id[2],]),
+           "4" = (data <- moocs[moocs$course_id == course_id[3],]),
+           "5" = (data <- moocs[moocs$course_id == course_id[4],]),
+           "6" = (data <- moocs[moocs$course_id == course_id[5],]),
+           "7" = (data <- moocs[moocs$course_id == course_id[6],]),
+           "8" = (data <- moocs[moocs$course_id == course_id[7],]),
+           "9" = (data <- moocs[moocs$course_id == course_id[8],]),
+           "10" = (data <- moocs[moocs$course_id == course_id[9],]),
+           "11" = (data <- moocs[moocs$course_id == course_id[10],]),
+           "12" = (data <- moocs[moocs$course_id == course_id[11],]),
+           "13" = (data <- moocs[moocs$course_id == course_id[12],]),
+           "14" = (data <- moocs[moocs$course_id == course_id[13],]),
+           "15" = (data <- moocs[moocs$course_id == course_id[14],]),
+           "16" = (data <- moocs[moocs$course_id == course_id[15],]),
+           "17" = (data <- moocs[moocs$course_id == course_id[16],])
+    )
+    
     # Years of students (we traduce year of birth to age)
     years <- 2014 - data$YoB
     # By Age
@@ -70,12 +118,33 @@ shinyServer(function(input, output) {
   
   # Visualization by genre
   output$GenderPlot <- renderPlot({
-    if(input$radioGender != "1") {
+    if(input$radioGender == "2") {
       # We keep only information from users that have obtained a certificate of completion
       data <- moocs[moocs$certified == "1",]
     } else {
-      data <- moocs
+      data <- moocs[moocs$registered == "1",]
     }
+    
+    switch(input$selectGender,
+           "1" = (data <- data[data$registered == "1",]),
+           "2" = (data <- data[data$course_id == course_id[1],]),
+           "3" = (data <- data[data$course_id == course_id[2],]),
+           "4" = (data <- data[data$course_id == course_id[3],]),
+           "5" = (data <- data[data$course_id == course_id[4],]),
+           "6" = (data <- data[data$course_id == course_id[5],]),
+           "7" = (data <- data[data$course_id == course_id[6],]),
+           "8" = (data <- data[data$course_id == course_id[7],]),
+           "9" = (data <- data[data$course_id == course_id[8],]),
+           "10" = (data <- data[data$course_id == course_id[9],]),
+           "11" = (data <- data[data$course_id == course_id[10],]),
+           "12" = (data <- data[data$course_id == course_id[11],]),
+           "13" = (data <- data[data$course_id == course_id[12],]),
+           "14" = (data <- data[data$course_id == course_id[13],]),
+           "15" = (data <- data[data$course_id == course_id[14],]),
+           "16" = (data <- data[data$course_id == course_id[15],]),
+           "17" = (data <- data[data$course_id == course_id[16],])
+    )
+    
     #By gender
     gender <- table(data$gender)
     genderpercent <- gender/sum(gender)*100
@@ -92,12 +161,33 @@ shinyServer(function(input, output) {
   
   # Visualization by country
   output$CountryPlot <- renderPlot({
-    if(input$radioCountry != "1") {
+    if(input$radioCountry == "2") {
       # We keep only information from users that have obtained a certificate of completion
       data <- moocs[moocs$certified == "1",]
     } else {
-      data <- moocs
+      data <- moocs[moocs$registered == "1",]
     }
+    
+    switch(input$selectCountry,
+           "1" = (data <- data[data$registered == "1",]),
+           "2" = (data <- data[data$course_id == course_id[1],]),
+           "3" = (data <- data[data$course_id == course_id[2],]),
+           "4" = (data <- data[data$course_id == course_id[3],]),
+           "5" = (data <- data[data$course_id == course_id[4],]),
+           "6" = (data <- data[data$course_id == course_id[5],]),
+           "7" = (data <- data[data$course_id == course_id[6],]),
+           "8" = (data <- data[data$course_id == course_id[7],]),
+           "9" = (data <- data[data$course_id == course_id[8],]),
+           "10" = (data <- data[data$course_id == course_id[9],]),
+           "11" = (data <- data[data$course_id == course_id[10],]),
+           "12" = (data <- data[data$course_id == course_id[11],]),
+           "13" = (data <- data[data$course_id == course_id[12],]),
+           "14" = (data <- data[data$course_id == course_id[13],]),
+           "15" = (data <- data[data$course_id == course_id[14],]),
+           "16" = (data <- data[data$course_id == course_id[15],]),
+           "17" = (data <- data[data$course_id == course_id[16],])
+    )
+  
     #By Country
     dataf <- table(data$final_cc_cname_DI)
     Countries <- as.data.frame(dataf)

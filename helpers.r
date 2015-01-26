@@ -35,3 +35,27 @@ Countries[1] <- countrycode(Countries$Var1,"country.name", "iso3c")
 
 sPDF <- joinCountryData2Map(Countries, joinCode = "NAME", nameJoinColumn = "Var1")
 mapCountryData(sPDF, nameColumnToPlot="Freq", mapTitle="Nº de alumnos certificados atendiendo al País", colourPalette="terrain")
+
+# Adding courses list
+course_id <- as.data.frame(unique(data$course_id))
+df4 <- course_id
+df4 <- cbind(fullname = names, df4)
+
+names = c("CB22x, The Ancient Greek Hero (Launched Spring, 2013)",
+          "CS50x, Introduction to Computer Science (Launched Fall, 2012)",
+          "ER22x, Justice (Launched Spring, 2013)",
+          "PH207x, Health in Numbers: Quantitative Methods in Clinical & Public Health Research (Launched Fall, 2012)",
+          "PH278x, Human Health and Global Environmental Change (Launched Spring, 2013)",
+          "6.002x, Circuits and Electronics (Launched Fall, 2012)",
+          "6.002x, Circuits and Electronics (Launched Spring, 2013)",
+          "14.73x, The Challenges of Global Poverty (Launched Spring, 2013)",
+          "2.01x, Elements of Structures (Launched Spring, 2013)",
+          "3.091x, Introduction to Solid State Chemistry (Launched Fall, 2012)",
+          "3.091x, Introduction to Solid State Chemistry (Launched Spring, 2013)",
+          "6.00x, Introduction to Computer Science Programming (Launched Fall, 2012)",
+          "6.00x, Introduction to Computer Science Programming (Launched Spring, 2013)",
+          "7.00x, Introduction to Biology - The Secret of Life (Launched Spring, 2013)",
+          "8.02x, Electricity and Magnetism (Launched Spring, 2013)",
+          "8.MReV, Mechanics ReView (Launched Summer, 2013)")
+
+colnames(df4)[2] <- "course_id"
