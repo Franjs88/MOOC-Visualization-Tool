@@ -36,11 +36,8 @@ shinyServer(function(input, output) {
   output$LoEPlot <- renderPlot({
     if(input$radioEd == "2") {
       # We keep only information from users that have obtained a certificate of completion
-      writeLines("Entra en 2")
-      data <- NULL
       data <- moocs[moocs$certified == "1",]
     } else {
-      writeLines("Entra en else")
       data <- moocs[moocs$registered == "1",]
     }
     
@@ -84,23 +81,23 @@ shinyServer(function(input, output) {
     }
     
     switch(input$selectAge,
-           "1" = (data <- moocs),
-           "2" = (data <- moocs[moocs$course_id == course_id[1],]),
-           "3" = (data <- moocs[moocs$course_id == course_id[2],]),
-           "4" = (data <- moocs[moocs$course_id == course_id[3],]),
-           "5" = (data <- moocs[moocs$course_id == course_id[4],]),
-           "6" = (data <- moocs[moocs$course_id == course_id[5],]),
-           "7" = (data <- moocs[moocs$course_id == course_id[6],]),
-           "8" = (data <- moocs[moocs$course_id == course_id[7],]),
-           "9" = (data <- moocs[moocs$course_id == course_id[8],]),
-           "10" = (data <- moocs[moocs$course_id == course_id[9],]),
-           "11" = (data <- moocs[moocs$course_id == course_id[10],]),
-           "12" = (data <- moocs[moocs$course_id == course_id[11],]),
-           "13" = (data <- moocs[moocs$course_id == course_id[12],]),
-           "14" = (data <- moocs[moocs$course_id == course_id[13],]),
-           "15" = (data <- moocs[moocs$course_id == course_id[14],]),
-           "16" = (data <- moocs[moocs$course_id == course_id[15],]),
-           "17" = (data <- moocs[moocs$course_id == course_id[16],])
+           "1" = (data <- data[data$registered == "1",]),
+           "2" = (data <- data[data$course_id == course_id[1],]),
+           "3" = (data <- data[data$course_id == course_id[2],]),
+           "4" = (data <- data[data$course_id == course_id[3],]),
+           "5" = (data <- data[data$course_id == course_id[4],]),
+           "6" = (data <- data[data$course_id == course_id[5],]),
+           "7" = (data <- data[data$course_id == course_id[6],]),
+           "8" = (data <- data[data$course_id == course_id[7],]),
+           "9" = (data <- data[data$course_id == course_id[8],]),
+           "10" = (data <- data[data$course_id == course_id[9],]),
+           "11" = (data <- data[data$course_id == course_id[10],]),
+           "12" = (data <- data[data$course_id == course_id[11],]),
+           "13" = (data <- data[data$course_id == course_id[12],]),
+           "14" = (data <- data[data$course_id == course_id[13],]),
+           "15" = (data <- data[data$course_id == course_id[14],]),
+           "16" = (data <- data[data$course_id == course_id[15],]),
+           "17" = (data <- data[data$course_id == course_id[16],])
     )
     
     # Years of students (we traduce year of birth to age)
