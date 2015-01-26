@@ -5,7 +5,7 @@ shinyUI(navbarPage("MOOC Visualization Tool", inverse=TRUE,
     #Left Sidebar
     sidebarLayout(
       sidebarPanel(
-        textOutput("leftEd"),
+        textOutput("leftEd"), br(), br(),
         radioButtons("radioEd", label=NULL,
                      choices = list("Registered" = 1, "Certified" = 2), 
                      selected = 1)
@@ -24,7 +24,7 @@ shinyUI(navbarPage("MOOC Visualization Tool", inverse=TRUE,
     #Left sidebar
     sidebarLayout(
       sidebarPanel(
-        textOutput("leftAge"),
+        textOutput("leftAge"),  br(), br(),
         radioButtons("radioAge", label=NULL,
                      choices = list("Registered" = 1, "Certified" = 2), 
                      selected = 1)
@@ -43,7 +43,7 @@ shinyUI(navbarPage("MOOC Visualization Tool", inverse=TRUE,
            #Left sidebar
            sidebarLayout(
              sidebarPanel(
-               textOutput("leftGender"), 
+               textOutput("leftGender"),  br(), br(),
                radioButtons("radioGender", label=NULL,
                             choices = list("Registered" = 1, "Certified" = 2), 
                             selected = 1)
@@ -62,7 +62,7 @@ shinyUI(navbarPage("MOOC Visualization Tool", inverse=TRUE,
            #Left sidebar 
                fluidRow(
                  column(2,
-                        textOutput("leftCountry"),
+                        textOutput("leftCountry"), br(), br(),
                         radioButtons("radioCountry", label=NULL,
                                      choices = list("Registered" = 1, "Certified" = 2), 
                                      selected = 1)

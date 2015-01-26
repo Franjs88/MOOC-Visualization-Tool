@@ -11,22 +11,22 @@ shinyServer(function(input, output) {
 
   output$leftEd <- renderText({ 
     "Bienvenido! Este es el panel de control. Aquí puedes configurar
-    las opciones de visualización de los datos."
+    las opciones de visualización de los datos.\n"
   })
   
   output$leftAge <- renderText({ 
     "Bienvenido! Este es el panel de control. Aquí puedes configurar
-    las opciones de visualización de los datos."
+    las opciones de visualización de los datos.\n"
   })
   
   output$leftGender <- renderText({ 
     "Bienvenido! Este es el panel de control. Aquí puedes configurar
-    las opciones de visualización de los datos."
+    las opciones de visualización de los datos.\n"
   })
   
   output$leftCountry <- renderText({ 
     "Bienvenido! Este es el panel de control. Aquí puedes configurar
-    las opciones de visualización de los datos."
+    las opciones de visualización de los datos.\n"
   })
   
   # Visualization by Level of Education
