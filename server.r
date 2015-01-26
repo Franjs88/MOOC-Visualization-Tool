@@ -5,6 +5,8 @@ library(countrycode)
 
 # We put here all load for performance reasons.
 #Nevertheless the load blocks the app a few seconds
+moocs <- read.csv("./data/HMXPC13_DI_v2_5-14-14.csv" ,header=TRUE, sep=",");
+
 data <- moocs[moocs$registered == "1",]
 
 # Adding courses list.
